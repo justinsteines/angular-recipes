@@ -27,13 +27,20 @@ body {
 
 .list-group-item,
 .recipe-grid-item {
-  transition: transform 0.4s ease;
+  transition: transform 0.3s ease;
 }
 
 .list-group-item:hover,
 .recipe-grid-item:hover {
-  transform: scale(1.01);
   box-shadow: 0 0 20px 0px #0000001a;
-  border: 1px solid rgba(0, 0, 0, 0.125);
+  // border: 1px solid rgba(0, 0, 0, 0.125);
   z-index: 10;
+}
+
+.list-group-item:hover {
+  transform: scale(1.01);
+}
+
+.recipe-grid-item:hover {
+  transform: scale(1.03);
 }
