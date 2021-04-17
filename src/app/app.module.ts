@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -41,7 +41,7 @@ import { TemporaryWarningComponent } from './temporary-warning/temporary-warning
     FormsModule,
     HttpClientModule,
   ],
-  providers: [Title],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

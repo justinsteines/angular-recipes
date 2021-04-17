@@ -10,44 +10,26 @@ const routes: Routes = [
   {
     path: 'recipe',
     component: RecipeBookComponent,
-    data: {
-      title: 'Recipe Book',
-    },
     children: [
       {
         path: 'list',
         component: RecipeListComponent,
-        data: {
-          title: 'Recipe Book',
-        },
       },
       {
         path: 'grid',
         component: RecipeGridComponent,
-        data: {
-          title: 'Recipe Book',
-        },
       },
       {
         path: 'create',
         component: RecipeEditComponent,
-        data: {
-          title: 'Recipe Book',
-        },
       },
       {
         path: ':recipeId',
         component: RecipeViewComponent,
-        data: {
-          title: 'Recipe Book',
-        },
       },
       {
         path: ':recipeId/edit',
         component: RecipeEditComponent,
-        data: {
-          title: 'Recipe Book',
-        },
       },
     ],
   },
