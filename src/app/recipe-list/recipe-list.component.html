@@ -1,0 +1,10 @@
+<div class="recipe-list mt-4 list-group">
+  <div
+    *ngFor="let recipe of recipes"
+    class="list-group-item"
+    [routerLink]="['/recipe', recipe._id]"
+    style="cursor: pointer"
+  >
+    <app-recipe-list-item [recipe]="recipe"></app-recipe-list-item>
+  </div>
+</div>

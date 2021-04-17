@@ -1,0 +1,285 @@
+<ng-container *ngIf="!editing || recipe">
+  <div class="mb-3">
+    <h3 class="mb-0">
+      <span *ngIf="editing">Edit "{{ recipe.name }}"</span>
+      <span *ngIf="!editing">Create Recipe</span>
+    </h3>
+  </div>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/recipe', viewMode]">Recipes</a>
+      </li>
+      <ng-container *ngIf="editing">
+        <li class="breadcrumb-item">
+          <a [routerLink]="['/recipe', recipe._id]">{{ recipe.name }}</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Edit</li>
+      </ng-container>
+      <li *ngIf="!editing" class="breadcrumb-item active" aria-current="page">
+        Create Recipe
+      </li>
+    </ol>
+  </nav>
+  <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+    <input *ngIf="editing" type="hidden" name="_id" formControlName="_id" />
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="bi bi-bookmark"></i>
+          </div>
+        </div>
+        <input
+          type="text"
+          name="name"
+          id="name"
+          class="form-control"
+          [ngClass]="{
+            'is-invalid':
+              recipeForm.get('name')!.invalid &&
+              (recipeForm.get('name')!.touched || formSubmitAttempt)
+          }"
+          placeholder="Recipe Name"
+          formControlName="name"
+        />
+        <div class="invalid-feedback">Please enter a recipe name.</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="bi bi-circle-half"></i>
+          </div>
+        </div>
+        <input
+          type="text"
+          name="prepTime"
+          id="prepTime"
+          class="form-control"
+          placeholder="Prep Time"
+          formControlName="prepTime"
+        />
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="bi bi-stopwatch"></i>
+          </div>
+        </div>
+        <input
+          type="text"
+          name="cookTime"
+          id="cookTime"
+          class="form-control"
+          placeholder="Cook Time"
+          formControlName="cookTime"
+        />
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="bi bi-image"></i>
+          </div>
+        </div>
+        <input
+          type="text"
+          name="imageUrl"
+          id="imageUrl"
+          class="form-control"
+          placeholder="Recipe Image URL"
+          formControlName="imageUrl"
+        />
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="isFavorite"
+          formControlName="isFavorite"
+        />
+        <label class="form-check-label" for="isFavorite"> Is Favorite </label>
+      </div>
+    </div>
+    <div class="alert alert-primary">
+      Use the "Ingredients" and "Instructions" buttons to toggle between adding
+      ingredients and instructions.
+    </div>
+    <div class="my-group p-3 mb-3">
+      <div class="d-flex justify-content-center">
+        <ul class="nav nav-pills">
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              [ngClass]="{
+                active: ingredientsOrInstructions === 'ingredients'
+              }"
+              (click)="toggleIngredientsOrInstructions('ingredients')"
+              style="cursor: pointer"
+              >Ingredients</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              [ngClass]="{
+                active: ingredientsOrInstructions === 'instructions'
+              }"
+              (click)="toggleIngredientsOrInstructions('instructions')"
+              style="cursor: pointer"
+              >Instructions</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="mt-4">
+        <div *ngIf="ingredientsOrInstructions === 'ingredients'">
+          <div formArrayName="ingredients">
+            <div
+              *ngFor="
+                let ingredientControl of ingredientControls;
+                let i = index
+              "
+              [formGroupName]="i"
+            >
+              <div class="row no-gutters mt-2">
+                <div class="col-7 mr-2">
+                  <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    class="form-control"
+                    placeholder="Ingredient Name"
+                    formControlName="name"
+                    [ngClass]="{
+                      'is-invalid':
+                        recipeForm.get(['ingredients', i, 'name'])!.invalid &&
+                        (recipeForm.get(['ingredients', i, 'name'])!.touched ||
+                          formSubmitAttempt)
+                    }"
+                  />
+                  <div
+                    *ngIf="ingredientControls.length <= 1"
+                    class="invalid-feedback"
+                  >
+                    Please enter an ingredient name.
+                  </div>
+                  <div
+                    *ngIf="ingredientControls.length > 1"
+                    class="invalid-feedback"
+                  >
+                    Please enter an ingredient name or remove this ingredient.
+                  </div>
+                </div>
+                <div
+                  class="col"
+                  [ngClass]="{ 'mr-2': ingredientControls.length > 1 }"
+                >
+                  <input
+                    type="text"
+                    name="amount"
+                    id="amount"
+                    class="form-control"
+                    placeholder="Amount"
+                    formControlName="amount"
+                  />
+                </div>
+                <div *ngIf="ingredientControls.length > 1" class="col-auto">
+                  <input
+                    type="button"
+                    class="btn btn-danger"
+                    value="&times;"
+                    (click)="onRemoveIngredient(i)"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center mt-4">
+            <input
+              type="button"
+              value="Add Ingredient"
+              class="btn btn-primary"
+              (click)="onAddIngredient()"
+            />
+          </div>
+        </div>
+        <div *ngIf="ingredientsOrInstructions === 'instructions'">
+          <div formArrayName="instructions">
+            <div
+              *ngFor="
+                let instructionControl of instructionControls;
+                let i = index
+              "
+            >
+              <div class="row no-gutters mt-2">
+                <div
+                  class="col"
+                  [ngClass]="{ 'mr-2': instructionControls.length > 1 }"
+                >
+                  <textarea
+                    cols="30"
+                    rows="3"
+                    class="form-control"
+                    placeholder="Instructions"
+                    [formControlName]="i"
+                    [ngClass]="{
+                      'is-invalid':
+                        recipeForm.get(['instructions', i])!.invalid &&
+                        (recipeForm.get(['instructions', i])!.touched ||
+                          formSubmitAttempt)
+                    }"
+                  ></textarea>
+                  <div
+                    *ngIf="instructionControls.length <= 1"
+                    class="invalid-feedback"
+                  >
+                    Please enter instructions.
+                  </div>
+                  <div
+                    *ngIf="instructionControls.length > 1"
+                    class="invalid-feedback"
+                  >
+                    Please enter instructions or remove this step.
+                  </div>
+                </div>
+                <div *ngIf="instructionControls.length > 1" class="col-auto">
+                  <input
+                    type="button"
+                    class="btn btn-danger"
+                    value="&times;"
+                    (click)="onRemoveInstruction(i)"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center mt-4">
+            <input
+              type="button"
+              value="Add Step"
+              class="btn btn-primary"
+              (click)="onAddInstruction()"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-4 d-flex justify-content-center">
+      <input
+        type="button"
+        class="btn btn-secondary"
+        value="Cancel"
+        [routerLink]="['/recipe', recipe?._id || viewMode]"
+      />
+      <input type="submit" class="btn btn-primary ml-3" value="Save Recipe" />
+    </div>
+  </form>
+</ng-container>

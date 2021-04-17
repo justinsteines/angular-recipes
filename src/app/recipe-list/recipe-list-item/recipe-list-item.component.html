@@ -1,0 +1,41 @@
+<div class="row no-gutters recipe-list-item">
+  <div class="col-auto d-none d-sm-flex">
+    <div class="img-container">
+      <img
+        *ngIf="recipe.imageUrl"
+        [src]="recipe.imageUrl"
+        [alt]="recipe.name"
+        class="img"
+      />
+      <img
+        *ngIf="!recipe.imageUrl"
+        src="/assets/images/placeholder.jpg"
+        [alt]="recipe.name"
+        class="img"
+      />
+    </div>
+  </div>
+  <div class="col-12 col-sm ml-sm-3">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">{{ recipe.name }}</h5>
+      <i
+        *ngIf="recipeIsFavorite"
+        class="bi bi-heart-fill"
+        (click)="onToggleFavoriteRecipeById($event, recipe._id)"
+        tabindex="0"
+      ></i>
+      <i
+        *ngIf="!recipeIsFavorite"
+        class="bi bi-heart"
+        (click)="onToggleFavoriteRecipeById($event, recipe._id)"
+        tabindex="0"
+      ></i>
+    </div>
+    <div *ngIf="recipe.prepTime">
+      <small><i class="bi bi-circle-half"></i> {{ recipe.prepTime }}</small>
+    </div>
+    <div *ngIf="recipe.cookTime">
+      <small><i class="bi bi-stopwatch"></i> {{ recipe.cookTime }}</small>
+    </div>
+  </div>
+</div>

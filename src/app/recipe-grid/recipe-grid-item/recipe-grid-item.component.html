@@ -1,0 +1,51 @@
+<div
+  class="recipe-grid-item my-2"
+  [routerLink]="['/recipe', recipe._id]"
+  style="cursor: pointer"
+>
+  <div class="text-decoration-none text-reset">
+    <div class="d-flex align-items-center justify-content-between m-3">
+      <h5 class="my-0">{{ recipe.name }}</h5>
+      <i
+        *ngIf="recipeIsFavorite"
+        class="bi bi-heart-fill"
+        tabindex="0"
+        (click)="onToggleFavoriteRecipeById($event, recipe._id)"
+      ></i>
+      <i
+        *ngIf="!recipeIsFavorite"
+        class="bi bi-heart"
+        tabindex="0"
+        (click)="onToggleFavoriteRecipeById($event, recipe._id)"
+      ></i>
+    </div>
+    <div class="d-flex align-items-center justify-content-around m-3">
+      <div *ngIf="recipe.prepTime" class="d-flex align-items-end">
+        <i class="bi bi-circle-half"></i>
+        <small class="m-0 ml-1">{{ recipe.prepTime }}</small>
+      </div>
+      <div *ngIf="recipe.cookTime" class="d-flex align-items-end">
+        <i class="bi bi-stopwatch"></i>
+        <small class="m-0 ml-1">{{ recipe.cookTime }}</small>
+      </div>
+      <div *ngIf="!recipe.prepTime && !recipe.cookTime">
+        <!-- Helps keep recipe grid items the same size. -->
+        <i class="bi bi-patch-question" style="color: transparent"></i>
+      </div>
+    </div>
+    <div class="img-container">
+      <img
+        *ngIf="recipe.imageUrl"
+        [src]="recipe.imageUrl"
+        [alt]="recipe.name"
+        class="img"
+      />
+      <img
+        *ngIf="!recipe.imageUrl"
+        src="/assets/images/placeholder.jpg"
+        [alt]="recipe.name"
+        class="img"
+      />
+    </div>
+  </div>
+</div>

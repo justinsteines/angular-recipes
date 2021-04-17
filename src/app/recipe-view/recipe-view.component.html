@@ -1,0 +1,125 @@
+<ng-container *ngIf="recipe">
+  <div class="mb-3">
+    <h3 class="mb-0">
+      <span>{{ recipe.name }}</span>
+    </h3>
+  </div>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/recipe', viewMode]">Recipes</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        {{ recipe.name }}
+      </li>
+    </ol>
+  </nav>
+  <div class="d-flex flex-column flex-md-row mb-3">
+    <div *ngIf="recipe.imageUrl" class="img-container mb-3 mb-md-0">
+      <img src="{{ recipe.imageUrl }}" alt="{{ recipe.name }}" />
+    </div>
+    <div
+      id="recipe-summary"
+      class="alert alert-primary flex-grow-1 d-flex mb-0 justify-content-around align-items-center"
+      [ngClass]="{ 'flex-md-column': recipe.imageUrl }"
+    >
+      <div
+        *ngIf="recipe.prepTime"
+        class="text-center d-flex flex-wrap justify-content-center align-items-center"
+      >
+        <div class="m-1">
+          <i class="bi bi-circle-half"></i>
+        </div>
+        <div class="m-1">{{ recipe.prepTime }}</div>
+      </div>
+      <div
+        class="text-center d-flex flex-wrap justify-content-center align-items-center"
+      >
+        <div class="m-1">
+          <i
+            *ngIf="recipeIsFavorite"
+            class="bi bi-heart-fill"
+            (click)="onToggleFavoriteRecipeById(recipe._id)"
+            tabindex="0"
+          ></i>
+          <i
+            *ngIf="!recipeIsFavorite"
+            class="bi bi-heart"
+            (click)="onToggleFavoriteRecipeById(recipe._id)"
+            tabindex="0"
+          ></i>
+        </div>
+        <div class="m-1">Favorite</div>
+      </div>
+      <div
+        *ngIf="recipe.cookTime"
+        class="text-center d-flex flex-wrap justify-content-center align-items-center"
+      >
+        <div class="m-1">
+          <i class="bi bi-stopwatch"></i>
+        </div>
+        <div class="m-1">{{ recipe.cookTime }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex justify-content-center mb-3">
+    <a [routerLink]="['/recipe', viewMode]" class="btn btn-secondary">Back</a>
+    <a
+      [routerLink]="['/recipe', recipe._id, 'edit']"
+      class="btn btn-primary ml-3"
+      >Edit</a
+    >
+    <button
+      class="btn btn-danger ml-3"
+      (click)="onRecipeDelete(content, recipe._id)"
+    >
+      Delete
+    </button>
+  </div>
+  <h3>Ingredients</h3>
+  <div class="p-3 mb-3 ingredient-list">
+    <ul class="mb-0">
+      <li *ngFor="let ingredient of recipe.ingredients">
+        {{ ingredient.name }}
+        <span *ngIf="ingredient.amount" class="badge bg-secondary">{{
+          ingredient.amount
+        }}</span>
+      </li>
+    </ul>
+  </div>
+  <h3>Instructions</h3>
+  <div class="mb-3">
+    <div
+      *ngFor="let instruction of recipe.instructions; index as i"
+      class="instruction d-flex py-2"
+    >
+      <div class="number my-2 mx-4">{{ i + 1 }}</div>
+      <div>{{ instruction }}</div>
+    </div>
+  </div>
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Delete recipe?</h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to delete "{{ recipe.name }}"?</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="modal.close()">
+        Cancel
+      </button>
+      <button class="btn btn-danger" (click)="modal.close('confirm_delete')">
+        Delete
+      </button>
+    </div>
+  </ng-template>
+</ng-container>
