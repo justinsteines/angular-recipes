@@ -53,7 +53,7 @@ export class RecipeService {
       cookTime: '18-22 minutes',
       isFavorite: true,
       imageUrl:
-        'https://cdn.pixabay.com/photo/2015/03/26/09/39/cupcakes-690040_1280.jpg',
+        'https://images.unsplash.com/photo-1616631124190-fa90afc46fa7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80',
       ingredients: [
         { name: 'granulated sugar', amount: '2 cups' },
         { name: 'all-purpose flour', amount: '1 3/4 cup + 2 Tbsp' },
