@@ -47,3 +47,5 @@ Thumbs.db
 
 # Firebase hosting.
 .firebase
+
+.angular
